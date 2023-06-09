@@ -113,7 +113,7 @@ class Trainer(object):
 
             val_result = self.evaluate("dev")
             val_results.append(val_result)
-            train_losses.append(tr_loss / global_step)
+            train_losses.append({'loss': tr_loss / global_step})
             val_losses.append(val_result['loss'])
             if min(val_losses) <= val_losses:
                 patience = 0
@@ -129,7 +129,7 @@ class Trainer(object):
                 train_iterator.close()
                 break
 
-        return global_step, tr_loss / global_step, train_losses, val_losses
+        return global_step, tr_loss / global_step, train_losses, val_results
 
     def evaluate(self, mode):
         if mode == 'test':

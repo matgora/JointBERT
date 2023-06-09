@@ -1,5 +1,5 @@
 import argparse
-
+import json
 from trainer import Trainer
 from utils import init_logger, load_tokenizer, read_prediction_text, set_seed, MODEL_CLASSES, MODEL_PATH_MAP
 from data_loader import load_and_cache_examples
@@ -17,11 +17,18 @@ def main(args):
     trainer = Trainer(args, train_dataset, dev_dataset, test_dataset)
 
     if args.do_train:
-        global_step, tr_loss, train_losses, val_losses = trainer.train()
+        global_step, tr_loss, train_losses, val_results = trainer.train()
+        with open(f"{args.model_dir}/dev_results.json", "w") as outfile:
+            json.dump(val_results, outfile)
+        with open(f"{args.model_dir}/train_losses.json", "w") as outfile:
+            json.dump(train_losses, outfile)
 
     if args.do_eval:
         trainer.load_model()
-        trainer.evaluate("test")
+        test_results = trainer.evaluate("test")
+        with open(f"{args.model_dir}/test_results.json", "w") as outfile:
+            json.dump(test_results, outfile)
+
 
 
 if __name__ == '__main__':
