@@ -17,7 +17,7 @@ def main(args):
     trainer = Trainer(args, train_dataset, dev_dataset, test_dataset)
 
     if args.do_train:
-        trainer.train()
+        global_step, tr_loss, train_losses, val_losses = trainer.train()
 
     if args.do_eval:
         trainer.load_model()

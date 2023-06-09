@@ -68,11 +68,15 @@ class Trainer(object):
 
         global_step = 0
         tr_loss = 0.0
+        patience = 0
+        train_losses = []
+        val_losses = []
+        val_results = []
         self.model.zero_grad()
 
         train_iterator = trange(int(self.args.num_train_epochs), desc="Epoch")
 
-        for _ in train_iterator:
+        for epoch in train_iterator:
             epoch_iterator = tqdm(train_dataloader, desc="Iteration")
             for step, batch in enumerate(epoch_iterator):
                 self.model.train()
@@ -101,21 +105,31 @@ class Trainer(object):
                     self.model.zero_grad()
                     global_step += 1
 
-                    if self.args.logging_steps > 0 and global_step % self.args.logging_steps == 0:
-                        self.evaluate("dev")
 
-                    if self.args.save_steps > 0 and global_step % self.args.save_steps == 0:
-                        self.save_model()
 
                 if 0 < self.args.max_steps < global_step:
                     epoch_iterator.close()
+                    break
+
+            val_result = self.evaluate("dev")
+            val_results.append(val_result)
+            train_losses.append(tr_loss / global_step)
+            val_losses.append(val_result['loss'])
+            if min(val_losses) <= val_losses:
+                patience = 0
+                self.save_model()
+            else:
+                patience += 1
+                if patience >= 3:
+                    train_iterator.close()
+                    logger.info("Early stopping: stopped at %d", epoch)
                     break
 
             if 0 < self.args.max_steps < global_step:
                 train_iterator.close()
                 break
 
-        return global_step, tr_loss / global_step
+        return global_step, tr_loss / global_step, train_losses, val_losses
 
     def evaluate(self, mode):
         if mode == 'test':

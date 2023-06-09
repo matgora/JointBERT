@@ -6,19 +6,27 @@ import torch
 import numpy as np
 from seqeval.metrics import precision_score, recall_score, f1_score
 
-from transformers import BertConfig, DistilBertConfig, AlbertConfig
-from transformers import BertTokenizer, DistilBertTokenizer, AlbertTokenizer
+from transformers import BertConfig, DistilBertConfig, AlbertConfig, RobertaConfig
+from transformers import BertTokenizer, DistilBertTokenizer, AlbertTokenizer, RobertaTokenizer
 
-from model import JointBERT, JointDistilBERT, JointAlbert
+from model import JointBERT, JointDistilBERT, JointAlbert, JointRoBERTa
 
 MODEL_CLASSES = {
     'bert': (BertConfig, JointBERT, BertTokenizer),
+    'polbert': (BertConfig, JointBERT, BertTokenizer),
+    'herbert': (BertConfig, JointBERT, BertTokenizer),
+    'mbert': (BertConfig, JointBERT, BertTokenizer),
+    'roberta': (RobertaConfig, JointRoBERTa, RobertaTokenizer),
     'distilbert': (DistilBertConfig, JointDistilBERT, DistilBertTokenizer),
     'albert': (AlbertConfig, JointAlbert, AlbertTokenizer)
 }
 
 MODEL_PATH_MAP = {
     'bert': 'bert-base-uncased',
+    'polbert': 'dkleczek/bert-base-polish-uncased-v1',
+    'herbert': 'allegro/herbert-base-cased',
+    'mbert': 'bert-base-multilingual-uncased',
+    'roberta': 'sdadas/polish-roberta-base-v2',
     'distilbert': 'distilbert-base-uncased',
     'albert': 'albert-xxlarge-v1'
 }
