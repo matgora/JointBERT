@@ -115,12 +115,12 @@ class Trainer(object):
             val_results.append(val_result)
             train_losses.append({'loss': tr_loss / global_step})
             val_losses.append(val_result['loss'])
-            if min(val_losses) <= val_losses:
+            if min(val_losses) >= val_losses[-1]:
                 patience = 0
                 self.save_model()
             else:
                 patience += 1
-                if patience >= 3:
+                if patience >= 7:
                     train_iterator.close()
                     logger.info("Early stopping: stopped at %d", epoch)
                     break

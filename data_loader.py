@@ -99,6 +99,10 @@ class JointProcessor(object):
             for s in slot.split():
                 slot_labels.append(self.slot_labels.index(s) if s in self.slot_labels else self.slot_labels.index("UNK"))
 
+            print(i)
+            print(text)
+            print(slot)
+
             assert len(words) == len(slot_labels)
             examples.append(InputExample(guid=guid, words=words, intent_label=intent_label, slot_labels=slot_labels))
         return examples
@@ -119,6 +123,7 @@ class JointProcessor(object):
 processors = {
     "atis": JointProcessor,
     "snips": JointProcessor,
+    "leyzer": JointProcessor,
     "massive": JointProcessor
 }
 

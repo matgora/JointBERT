@@ -7,16 +7,16 @@ import numpy as np
 from seqeval.metrics import precision_score, recall_score, f1_score
 
 from transformers import BertConfig, DistilBertConfig, AlbertConfig, RobertaConfig
-from transformers import BertTokenizer, DistilBertTokenizer, AlbertTokenizer, RobertaTokenizer
+from transformers import BertTokenizer, DistilBertTokenizer, AlbertTokenizer, RobertaTokenizer, AutoTokenizer
 
 from model import JointBERT, JointDistilBERT, JointAlbert, JointRoBERTa
 
 MODEL_CLASSES = {
     'bert': (BertConfig, JointBERT, BertTokenizer),
     'polbert': (BertConfig, JointBERT, BertTokenizer),
-    'herbert': (BertConfig, JointBERT, BertTokenizer),
+    'herbert': (BertConfig, JointBERT, AutoTokenizer),
     'mbert': (BertConfig, JointBERT, BertTokenizer),
-    'roberta': (RobertaConfig, JointRoBERTa, RobertaTokenizer),
+    'roberta': (RobertaConfig, JointRoBERTa, AutoTokenizer),
     'distilbert': (DistilBertConfig, JointDistilBERT, DistilBertTokenizer),
     'albert': (AlbertConfig, JointAlbert, AlbertTokenizer)
 }
@@ -41,7 +41,7 @@ def get_slot_labels(args):
 
 
 def load_tokenizer(args):
-    return MODEL_CLASSES[args.model_type][2].from_pretrained(args.model_name_or_path)
+    return MODEL_CLASSES[args.model_type][2].from_pretrained(MODEL_PATH_MAP[args.model_type])
 
 
 def init_logger():

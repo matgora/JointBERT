@@ -1,14 +1,13 @@
 import torch
 import torch.nn as nn
-from transformers.modeling_bert import BertPreTrainedModel
-from transformers.modeling_roberta import RobertaModel, RobertaConfig
+from transformers.models.roberta.modeling_roberta import RobertaPreTrainedModel, RobertaModel, RobertaConfig
 from torchcrf import CRF
 from .module import IntentClassifier, SlotClassifier
 
 
-class JointRoBERTa(BertPreTrainedModel):
+class JointRoBERTa(RobertaPreTrainedModel):
     def __init__(self, config, args, intent_label_lst, slot_label_lst):
-        super(JointBERT, self).__init__(config)
+        super(JointRoBERTa, self).__init__(config)
         self.args = args
         self.num_intent_labels = len(intent_label_lst)
         self.num_slot_labels = len(slot_label_lst)
