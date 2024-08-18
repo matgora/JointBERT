@@ -26,7 +26,7 @@ def load_model(pred_config, args, device):
         raise Exception("Model doesn't exists! Train first!")
 
     try:
-        model = MODEL_CLASSES[args.model_type][1].from_pretrained(args.model_dir,
+        model = MODEL_CLASSES[args.model_type][1].from_pretrained(pred_config.model_dir,
                                                                   args=args,
                                                                   intent_label_lst=get_intent_labels(args),
                                                                   slot_label_lst=get_slot_labels(args))
