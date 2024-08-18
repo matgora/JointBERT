@@ -1,3 +1,10 @@
+# Spoken Polish Language Understanding
+- Fine-tuned, evaluated and compared 16 models for joint intent and slot-filling for Polish language based on BERT
+- Preprocessed, cleaned and visualized two different Polish SLU datasets - Leyzer and MASSIVE
+- Implemented Early Stopping and integrated 4 pretrained models into the existing JointBERT architecture
+
+The thesis is available at https://github.com/matgora/JointBERT/blob/master/thesis/Masters_Thesis.pdf
+
 # JointBERT
 
 (Unofficial) Pytorch implementation of `JointBERT`: [BERT for Joint Intent Classification and Slot Filling](https://arxiv.org/abs/1902.10909)
