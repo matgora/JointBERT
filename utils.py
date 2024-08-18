@@ -13,7 +13,7 @@ from model import JointBERT, JointDistilBERT, JointAlbert, JointRoBERTa
 
 MODEL_CLASSES = {
     'bert': (BertConfig, JointBERT, BertTokenizer),
-    'polbert': (BertConfig, JointBERT, BertTokenizer),
+    'polbert': (BertConfig, JointBERT, AutoTokenizer),
     'herbert': (BertConfig, JointBERT, AutoTokenizer),
     'mbert': (BertConfig, JointBERT, BertTokenizer),
     'roberta': (RobertaConfig, JointRoBERTa, AutoTokenizer),

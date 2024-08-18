@@ -137,7 +137,7 @@ class Trainer(object):
         elif mode == 'dev':
             dataset = self.dev_dataset
         else:
-            raise Exception("Only dev and test dataset available")
+            dataset = mode
 
         eval_sampler = SequentialSampler(dataset)
         eval_dataloader = DataLoader(dataset, sampler=eval_sampler, batch_size=self.args.eval_batch_size)
@@ -224,7 +224,7 @@ class Trainer(object):
         for key in sorted(results.keys()):
             logger.info("  %s = %s", key, str(results[key]))
 
-        return results
+        return results, (intent_preds, out_intent_label_ids, slot_preds_list, out_slot_label_list)
 
     def save_model(self):
         # Save model checkpoint (Overwrite)
@@ -251,3 +251,4 @@ class Trainer(object):
             logger.info("***** Model Loaded *****")
         except:
             raise Exception("Some model files might be missing...")
+
