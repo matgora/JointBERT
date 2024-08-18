@@ -196,17 +196,19 @@ def predict(pred_config):
                 slot_preds_list[i].append(slot_label_map[slot_preds[i][j]])
 
     # Write to output file
-    with open(pred_config.output_file, "w", encoding="utf-8") as f:
-        for words, slot_preds, intent_pred in zip(lines, slot_preds_list, intent_preds):
-            line = ""
-            for word, pred in zip(words, slot_preds):
-                if pred == 'O':
-                    line = line + word + " "
-                else:
-                    line = line + "[{}:{}] ".format(word, pred)
-            f.write("<{}> -> {}\n".format(intent_label_lst[intent_pred], line.strip()))
+    if not pred_config.output_file:
+        with open(pred_config.output_file, "w", encoding="utf-8") as f:
+            for words, slot_preds, intent_pred in zip(lines, slot_preds_list, intent_preds):
+                line = ""
+                for word, pred in zip(words, slot_preds):
+                    if pred == 'O':
+                        line = line + word + " "
+                    else:
+                        line = line + "[{}:{}] ".format(word, pred)
+                f.write("<{}> -> {}\n".format(intent_label_lst[intent_pred], line.strip()))
 
     logger.info("Prediction Done!")
+    return slot_preds_list, intent_preds
 
 
 if __name__ == "__main__":
