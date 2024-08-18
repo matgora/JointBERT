@@ -9,8 +9,8 @@ from torch.utils.data import TensorDataset, DataLoader, SequentialSampler
 
 from utils import init_logger, load_tokenizer, get_intent_labels, get_slot_labels, MODEL_CLASSES
 
-logger = logging.getLogger(__name__)
 
+logger = logging.getLogger(__name__)
 
 def get_device(pred_config):
     return "cuda" if torch.cuda.is_available() and not pred_config.no_cuda else "cpu"
@@ -125,7 +125,7 @@ def convert_input_file_to_tensor_dataset(lines,
     return dataset
 
 
-def predict(pred_config, args, model, lines, tokenizer):
+def predict(pred_config, args, model, device, lines, tokenizer):
     intent_label_lst = get_intent_labels(args)
     slot_label_lst = get_slot_labels(args)
 
