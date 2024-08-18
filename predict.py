@@ -188,7 +188,7 @@ def predict(pred_config, args, model, device, lines, tokenizer):
                 slot_preds_list[i].append(slot_label_map[slot_preds[i][j]])
 
     # Write to output file
-    if not pred_config.output_file:
+    if pred_config.output_file:
         with open(pred_config.output_file, "w", encoding="utf-8") as f:
             for words, slot_preds, intent_pred in zip(lines, slot_preds_list, intent_preds):
                 line = ""
