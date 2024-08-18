@@ -125,20 +125,12 @@ def convert_input_file_to_tensor_dataset(lines,
     return dataset
 
 
-def predict(pred_config):
-    # load model and args
-    args = get_args(pred_config)
-    device = get_device(pred_config)
-    model = load_model(pred_config, args, device)
-    logger.info(args)
-
+def predict(pred_config, args, model, lines, tokenizer):
     intent_label_lst = get_intent_labels(args)
     slot_label_lst = get_slot_labels(args)
 
     # Convert input file to TensorDataset
     pad_token_label_id = args.ignore_index
-    tokenizer = load_tokenizer(args)
-    lines = read_input_file(pred_config)
     dataset = convert_input_file_to_tensor_dataset(lines, pred_config, args, tokenizer, pad_token_label_id)
 
     # Predict
@@ -211,6 +203,17 @@ def predict(pred_config):
     return slot_preds_list, intent_preds
 
 
+def main(pred_config):
+    # load model and args
+    args = get_args(pred_config)
+    device = get_device(pred_config)
+    model = load_model(pred_config, args, device)
+    logger.info(args)
+    tokenizer = load_tokenizer(args)
+    lines = read_input_file(pred_config)
+    predict(pred_config, args, model, lines, tokenizer)
+
+
 if __name__ == "__main__":
     init_logger()
     parser = argparse.ArgumentParser()
@@ -223,4 +226,4 @@ if __name__ == "__main__":
     parser.add_argument("--no_cuda", action="store_true", help="Avoid using CUDA when available")
 
     pred_config = parser.parse_args()
-    predict(pred_config)
+    main(pred_config)
